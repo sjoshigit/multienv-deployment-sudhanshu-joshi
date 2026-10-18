@@ -1,0 +1,46 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "quit(db.adminCommand('ping').ok ? 0 : 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  backend-dev:
+    build: ./backend/dev
+    restart: unless-stopped
+    env_file:
+      - ./backend/dev/.env
+    ports:
+      - "127.0.0.1:3001:3001"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  backend-prod:
+    build: ./backend/prod
+    restart: unless-stopped
+    env_file:
+      - ./backend/prod/.env
+    ports:
+      - "127.0.0.1:3002:3002"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:80"
+    depends_on:
+      - backend-dev
+      - backend-prod
+
+volumes:
+  mongo_data:

@@ -1,0 +1,13 @@
+﻿Student Name: Sudhanshu Joshi
+Repository URL: https://github.com/sjoshigit/multienv-deployment-sudhanshu-joshi
+Deployment Status: Working
+Deployment Environment: Local Windows computer with Docker Desktop
+
+Access URLs:
+- Development: http://localhost:3000/dev
+- Production: http://localhost:3000/prod
+- Frontend: http://localhost:3000
+
+Access Note: URLs are accessible on the deployment computer while containers are running.
+
+Date of Submission: 18-10-2026
